@@ -16,8 +16,8 @@ from sklearn.metrics import confusion_matrix
 # In[11]:
 
 
-# IMPORTING DATA
-cc_approvs = pd.read_csv(r'C:\Users\user\Masaüstü\CreditCardApprovals.csv', header = None)
+# Importing the data and inspecting
+cc_approvs = pd.read_csv(r'C:\Users\user\Desktop\CreditCardApprovals.csv', header = None)
 cc_approvs.head()
 
 
@@ -51,7 +51,7 @@ print(cc_approvs.isnull().sum())
 # In[18]:
 
 
-#Imputing missing valueswith the most frequent value
+#Imputing remainig missing values with the most frequent value
 for col in cc_approvs.columns:
     if cc_approvs[col].dtypes == 'object':
         cc_approvs = cc_approvs.fillna(cc_approvs[col].value_counts().index[0])
@@ -62,7 +62,7 @@ print(cc_approvs.isnull().sum())
 # In[19]:
 
 
-#Numeric Transformation
+#Numeric transformation with LabelEncoder
 lab_encod = LabelEncoder()
 
 for col in cc_approvs.columns:
@@ -76,7 +76,7 @@ for col in cc_approvs.columns:
 
 #Splitting dataset into train and test set
 
-#Dropping unnnecessary attributes
+#Dropping unimportant attributes like DriversLicense and ZipCode 
 cc_approvs = cc_approvs.drop([11, 13], axis = 1)
 cc_approvs_val = cc_approvs.values
 
@@ -98,7 +98,7 @@ rescale_X_test = mm_scaler.fit_transform(X_test)
 # In[24]:
 
 
-#Fitting a logistic regression model to the train set
+# Instantiating the logistic regression model and fitting it to the the train set
 
 lr = LogisticRegression()
 lr.fit(rescale_X_train , y_train)
@@ -107,13 +107,13 @@ lr.fit(rescale_X_train , y_train)
 # In[27]:
 
 
-# Making predictions with model
+# Making predictions with logistic regression model
 y_pred = lr.predict(rescale_X_test)
 
-#Printing the accuracy of the model
+#Printing the accuracy of the logistic regression model
 print('Accuracy of the model : ', lr.score(rescale_X_test, y_test))
 
-#Printing conf. matrix results
+#Printing confusion matrix results
 confusion_matrix(y_test, y_pred)
 
 
@@ -128,12 +128,12 @@ max_iter = [100, 150, 200]
 # Create a dictionary where tol and max_iter are keys and the lists of their values are corresponding values
 param_grid = dict(tol = tol, max_iter = max_iter)
 
-grid_srch = GridSearchCV(estimator = lr, param_grid = param_grid, cv = 7)
+grid_CV = GridSearchCV(estimator = lr, param_grid = param_grid, cv = 7)
 
 # Using MinMaxScaler to rescale X a
 rescale_X = mm_scaler.fit_transform(X)
 
-grid_result = grid_srch.fit(rescale_X, y)
+grid_result = grid_CV.fit(rescale_X, y)
 
 best_score, best_params = grid_result.best_score_, grid_result.best_params_
 
