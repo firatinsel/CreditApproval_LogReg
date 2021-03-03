@@ -51,7 +51,7 @@ print(cc_approvs.isnull().sum())
 # In[18]:
 
 
-#Imputing remainig missing values with the most frequent value
+#Imputing remaining missing values with the most frequent value
 for col in cc_approvs.columns:
     if cc_approvs[col].dtypes == 'object':
         cc_approvs = cc_approvs.fillna(cc_approvs[col].value_counts().index[0])
