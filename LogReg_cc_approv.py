@@ -88,7 +88,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = .3)
 # In[23]:
 
 
-# Instantiating MinMaxScaler and using it to rescale X_train and X_test
+# Initializing MinMaxScaler and using it to rescale X_train and X_test
 
 mm_scaler = MinMaxScaler(feature_range=(0, 1))
 rescale_X_train = mm_scaler.fit_transform(X_train)
@@ -98,7 +98,7 @@ rescale_X_test = mm_scaler.fit_transform(X_test)
 # In[24]:
 
 
-# Instantiating the logistic regression model and fitting it to the the train set
+# Initializing the logistic regression model and fitting it to the the train set
 
 lr = LogisticRegression()
 lr.fit(rescale_X_train , y_train)
@@ -125,7 +125,7 @@ confusion_matrix(y_test, y_pred)
 tol = [0.01,0.001, 0.0001]
 max_iter = [100, 150, 200]
 
-# Create a dictionary where tol and max_iter are keys and the lists of their values are corresponding values
+# Creating a dictionary where tol and max_iter are keys and the lists of their values are corresponding values
 param_grid = dict(tol = tol, max_iter = max_iter)
 
 grid_CV = GridSearchCV(estimator = lr, param_grid = param_grid, cv = 7)
